@@ -2,15 +2,42 @@
 layout: page
 ---
 
-# FLEEThealth FHIR API Calls
+# Fleet Health FHIR API Calls
 
-This page shows FHIR API calls that we support in production enviroments for any EMR vendor, including Epic, Cerner and other large national vendors.
+This page shows FHIR API calls that we can support across different vendor EMR systems, including Epic, Cerner and other large national vendors.
 
-Some of these API calls (or FHIR resources) are supported in various way by the vendors involved in the Sync For Science pilot for the Precision Medicine Initiative.
+Some of these API calls for FHIR resources are supported in various way by the vendors involved in the Sync For Science pilot for the Precision Medicine Initiative.
 
-Here are a few basics pieces of information about how FHIR works in the examples below. The following refer to the following variables:
+One important thing to note about FHIR is that it supports many types of data that can point to each other 'by reference'. For example:
 
- * `patientId` indicates the FHIR `id` of the `Patient` in context. For example, `123`.
+ + `patientId` indicates the FHIR `id` of the `Patient` Resource in context.
+ 
+For example, in the request example below:
+ 
+ + "resourceType": "Patient",
+    "id": "51200",
+
+shows the FHIR ID number for the patient on this server.
+
+This means that in all other Resources, like for a Medication or Appointment, the patient will be referenced by their number, and not by their name. Like here (shortened json here on purpose...)
+
+ +    {"resourceType": "MedicationOrder"},
+         "patient": {
+         "reference": "Patient/51200"
+         },
+         "prescriber": {
+         "reference": "Practitioner/7903"
+         },
+         "medicationCodeableConcept": {
+         "coding": [{
+         "system": "http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm",
+         "code": "00062141116",
+         "display": "Ortho Micronor 0.35 mg Tab"
+         }
+         ]},"dosageInstruction": [{"text": "Take one tablet by mouth daily"}]
+         }
+
+This allows for a lot of good things (like say, a reserach study that wanted to study a population in real time, without seeing everyone's names and home address), though it does mean that you need to request a patient resource first, so you can lookup other information about them on the server. 
 
 
 ## Patient demographics
