@@ -264,12 +264,12 @@ Includes: Payor, account number, group number
 | FHIR DSTU2 Resource | <http://hl7.org/fhir/coverage.html#resource>                    |
 
 ##### On *first-connection*, *periodic-update*.
-    GET /Coverage?patient={% raw %}{{patientId}}{% endraw %}
+    GET /Coverage?subscriber={% raw %}{{patientId}}{% endraw %}
 
 ###### Request
 
 ```HTTP
-GET /baseDstu2/Coverage?patient=51200 HTTP/1.1
+GET /baseDstu2/Coverage?subscriber=51200 HTTP/1.1
 Host: api.fleetap.io
 Accept: application/json+fhir
 ```
