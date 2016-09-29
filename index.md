@@ -269,7 +269,7 @@ Includes: Payor, account number, group number
 ###### Request
 
 ```HTTP
-GET /baseDstu2/Patient/51200 HTTP/1.1
+GET /baseDstu2/Coverage?patient=51200 HTTP/1.1
 Host: api.fleetap.io
 Accept: application/json+fhir
 ```
