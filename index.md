@@ -387,7 +387,7 @@ Accept: application/json+fhir
 ```JSON
 ```
 
-## Patient appointments
+## Appointments
 
 A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
 
@@ -398,6 +398,26 @@ A booking of a healthcare event among patient(s), practitioner(s), related perso
 
 ```HTTP
 GET /baseDstu2/Appointment?patient=51200 HTTP/1.1
+Host: api.fleetap.io
+Accept: application/json+fhir
+```
+
+###### Response
+
+```JSON
+```
+
+## Locations
+
+Details and position information for a physical place where services are provided and resources and participants may be stored, found, contained or accommodated.
+
+##### On *first-connection*
+    GET /Location
+
+###### Request
+
+```HTTP
+GET /baseDstu2/Location HTTP/1.1
 Host: api.fleetap.io
 Accept: application/json+fhir
 ```
