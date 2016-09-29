@@ -2,11 +2,11 @@
 layout: page
 ---
 
-# FLEET FHIR API Calls
+# FLEEThealth FHIR API Calls
 
-In the list of API calls below, you'll see each data type annotated with its [MU Common Clinical Data Set labels](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf) (#1-21). Note that we're currently not covering elements #16 (care team members), #18 (unique device identifiers), #19 (assessment and plan of treatment), #20 (goals) — which we believe is a reasonable scope limitation for the S4S pilots.
+This page shows FHIR API calls that we support in production enviroments for any EMR vendor, including Epic, Cerner and other large national vendors.
 
-The [Argonaut Project](http://argonautwiki.hl7.org/index.php?title=Main_Page) will help define these elements in more depth, and we'll build on that effort when additional implementation guidance is available.
+Some of these API calls (or FHIR resources) are supported in various way by the vendors involved in the Sync For Science pilot for the Precision Medicine Initiative.
 
 The examples below refer to the following variables:
 
@@ -19,23 +19,7 @@ We'll also refer to two "request times":
  * *first-connection* for broad queries that the app will make once, after first approval, to back-fill historical data
  * *periodic-update* for narrow queries the app will make frequently (e.g. weekly)
 
-(Note: a production-quality app might repeat the "broad" queries on an occasional basis — e.g. yearly  — as a sanity check, and to discovery any data that may have fallen _out_ of the record.)
-
-Want to propose a change?
-[edit this page!](https://github.com/sync-for-science/sync-for-science.github.io/edit/master/api-calls/index.md)
-
-## Authorization expectations
-
-Sync for Science<sup>TM</sup> (like Argonaut) uses the OAuth2-based [SMART on FHIR authorization specification](http://docs.smarthealthit.org/authorization). But we don't need all the moving parts. In particular, in Sync for Science we can get away with a minimum of:
-
-1. "**confidential clients**", meaning that apps get assigned a `client_id` and `client_secret` to authenticate to EHRs.The general SMART and Argonaut specs also require support for "public clients", but it's not strictly a requirement in S4S.
-
-2.  "**standalone launch**" flow, meaning that the patient (research participant) can begin by interacting with the PMI app, and from there, can launch into an "connect to my EHR" workflow. The general SMART and Argonaut specs also require support for the "EHR launch flow" (where apps launch from an EHR or portal), but it's not strictly a requirement in S4S.
-
-3.  **`patient/*.read launch/patient offline_access`** scopes, meaning that when the app launches, it will ask the EHR for permission to read all data available to the patient, and it will ask to learn the FHIR id of the patient whose records are shared.
-
-
-We also **do not require support for Single Sign-on via OpenID Connect** in S4S (though again, it's part of SMART and Argonaut, and we encourage implementers to support it).
+(Note: a production-quality app might repeat the "broad" queries on an occasional basis to discover data that may have fallen _out_ of the record.)
 
 ## Server metadata
 
@@ -376,3 +360,17 @@ Accept: application/json+fhir
 
 ##### On *periodic-update*
     GET /DocumentReference?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %}
+
+
+## Authorization
+
+As part of Sync for Science<sup>TM</sup> we implement support for the OAuth2-based [SMART on FHIR authorization specification](http://docs.smarthealthit.org/authorization). But we don't need all the moving parts. In particular, we can get away with a minimum of:
+
+1. "**confidential clients**", meaning that apps get assigned a `client_id` and `client_secret` to authenticate to EHRs.The general SMART and Argonaut specs also require support for "public clients", but it's not strictly a requirement in S4S.
+
+2.  "**standalone launch**" flow, meaning that the patient (research participant) can begin by interacting with the PMI app, and from there, can launch into an "connect to my EHR" workflow. The general SMART and Argonaut specs also require support for the "EHR launch flow" (where apps launch from an EHR or portal), but it's not strictly a requirement in S4S.
+
+3.  **`patient/*.read launch/patient offline_access`** scopes, meaning that when the app launches, it will ask the EHR for permission to read all data available to the patient, and it will ask to learn the FHIR id of the patient whose records are shared.
+
+
+We also **do not require support for Single Sign-on via OpenID Connect** in S4S (though again, it's part of SMART and Argonaut, and we encourage implementers to support it).
