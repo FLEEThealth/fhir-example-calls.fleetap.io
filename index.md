@@ -8,31 +8,16 @@ This page shows FHIR API calls that we support in production enviroments for any
 
 Some of these API calls (or FHIR resources) are supported in various way by the vendors involved in the Sync For Science pilot for the Precision Medicine Initiative.
 
-The examples below refer to the following variables:
+Here are a few basics pieces of information about how FHIR works in the examples below. The following refer to the following variables:
 
  * `patientId` indicates the FHIR `id` of the `Patient` in context. For example, `123`.
 
- * `lastCheck` indiclates a FHIR `instant`, with millisecond-level precision including a timezone. For example, `2016-04-01T02:52:32.000Z`
 
-We'll also refer to two "request times":
-
- * *first-connection* for broad queries that the app will make once, after first approval, to back-fill historical data
- * *periodic-update* for narrow queries the app will make frequently (e.g. weekly)
-
-(Note: a production-quality app might repeat the "broad" queries on an occasional basis to discover data that may have fallen _out_ of the record.)
-
-## Server metadata
-
-Return a FHIR conformance statement with [SMART extensions for OAuth](http://docs.smarthealthit.org/authorization/conformance-statement/)
-
-    GET /metadata
-
-## Patient demographics ([MU CCDS #1-6](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
+## Patient demographics
 Includes: name, birth sex, birthdate, race, ethnicty, preferred language
 
 | Details             | URL                                                 |
 |---------------------|-----------------------------------------------------|
-| Argonaut Guide      | <http://argonautwiki.hl7.org/index.php?title=Patient> |
 | FHIR DSTU2 Resource | <http://hl7.org/fhir/patient.html#resource>                    |
 
 ##### On *first-connection*, *periodic-update*.
@@ -51,11 +36,10 @@ Accept: application/json+fhir
 ```JSON
 ```
 
-## Smoking status ([MU CCDS #7](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
+## Smoking status
 
 | Details             | URL                                                 |
 |---------------------|-----------------------------------------------------|
-| Argonaut Guide      | <http://argonautwiki.hl7.org/index.php?title=Smoking_Status> |
 | FHIR DSTU2 Resource | <http://hl7.org/fhir/observation.html#resource>                    |
 
 ##### On *first-connection*
@@ -90,11 +74,10 @@ Accept: application/json+fhir
 ```JSON
 ```
 
-## Problems ([MU CCDS #8, #21](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
+## Problems
 
 | Details             | URL                                                 |
 |---------------------|-----------------------------------------------------|
-| Argonaut Guide      | <http://argonautwiki.hl7.org/index.php?title=Problems_and_Health_Concerns> |
 | FHIR DSTU2 Resource | <http://hl7.org/fhir/condition.html#resource>                    |
 
 
@@ -131,11 +114,9 @@ Accept: application/json+fhir
 ```
 
 
-## Medications and allergies ([MU CCDS #9-10](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
-
+## Medications and allergies
 | Details             | URL                                                 |
 |---------------------|-----------------------------------------------------|
-| Argonaut Guide      | <http://argonautwiki.hl7.org/index.php?title=Medications> <http://argonautwiki.hl7.org/index.php?title=Allergies> |
 | FHIR DSTU2 Resource | <http://hl7.org/fhir/medicationstatement.html#resource> <http://hl7.org/fhir/medicationorder.html#resource> <http://hl7.org/fhir/medicationdispense.html#resource> <http://hl7.org/fhir/medicationadministration.html#resource>    <http://hl7.org/fhir/allergyintolerance.html#resource>                    |
 
 
@@ -223,12 +204,11 @@ Accept: application/json+fhir
     GET /AllergyIntolerance?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %}}
 
 
-## Lab results ([MU CCDS #11? and #12](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
+## Lab results
 
 
 | Details             | URL                                                 |
 |---------------------|-----------------------------------------------------|
-| Argonaut Guide      | <http://argonautwiki.hl7.org/index.php?title=Laboratory_Results> |
 | FHIR DSTU2 Resource | <https://hl7.org/fhir/observation.html#resource>                   |
 
 ##### On *first-connection*
@@ -278,11 +258,10 @@ Accept: application/json+fhir
 ##### On *periodic-update*
     GET /Observation?category=vital-signs?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %}
 
-## Procedures ([MU CCDS #15](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
+## Procedures
 
 | Details             | URL                                                 |
 |---------------------|-----------------------------------------------------|
-| Argonaut Guide      | <http://argonautwiki.hl7.org/index.php?title=Procedures> |
 | FHIR DSTU2 Resource | <https://hl7.org/fhir/procedure.html#resource>                   |
 
 
@@ -358,9 +337,6 @@ Accept: application/json+fhir
 ```JSON
 ```
 
-##### On *periodic-update*
-    GET /DocumentReference?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %}
-
 
 ## Authorization
 
@@ -372,5 +348,20 @@ As part of Sync for Science<sup>TM</sup> we implement support for the OAuth2-bas
 
 3.  **`patient/*.read launch/patient offline_access`** scopes, meaning that when the app launches, it will ask the EHR for permission to read all data available to the patient, and it will ask to learn the FHIR id of the patient whose records are shared.
 
+## Server metadata
 
-We also **do not require support for Single Sign-on via OpenID Connect** in S4S (though again, it's part of SMART and Argonaut, and we encourage implementers to support it).
+Return a FHIR conformance statement with [SMART extensions for OAuth](http://docs.smarthealthit.org/authorization/conformance-statement/)
+
+    GET /metadata
+
+Also refer to regarding "request times":
+
+ * `lastCheck` indiclates a FHIR `instant`, with millisecond-level precision including a timezone. For example, `2016-04-01T02:52:32.000Z`
+
+ * *first-connection* for broad queries that the app will make once, after first approval, to back-fill historical data
+ * *periodic-update* for narrow queries the app will make frequently (e.g. weekly)
+
+(Note: a production-quality app might repeat the "broad" queries on an occasional basis to discover data that may have fallen _out_ of the record.)
+
+##### On *periodic-update*
+    GET /DocumentReference?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %
