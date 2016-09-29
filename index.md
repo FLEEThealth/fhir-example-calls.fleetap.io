@@ -3,6 +3,7 @@ layout: page
 ---
 
 # Fleet Health: FHIR API Access For Everyone
+## Introduction
 
 This page shows FHIR API calls that we can support across different vendor EMR systems, including Epic, Cerner and other large national vendors.
 
