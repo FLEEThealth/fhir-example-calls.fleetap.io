@@ -3,6 +3,7 @@ layout: page
 ---
 
 # Fleet Health: FHIR API Access For Everyone
+
 ## Introduction
 
 This page shows FHIR API calls that we can support across different vendor EMR systems, including Epic, Cerner and other large national vendors.
@@ -245,7 +246,7 @@ Accept: application/json+fhir
 ###### Request
 
 ```HTTP
-GET /baseDstu2/Observation?category=laboratory&patient=51200&_count=5 HTTP/1.1
+GET /baseDstu2/Observation?patient=51200&_count=5 HTTP/1.1
 Host: api.fleetap.io
 Accept: application/json+fhir
 ```
@@ -254,6 +255,30 @@ Accept: application/json+fhir
 
 ```JSON
 ```
+
+## Insurance Coverage
+Includes: Payor, account number, group number
+
+| Details             | URL                                                 |
+|---------------------|-----------------------------------------------------|
+| FHIR DSTU2 Resource | <http://hl7.org/fhir/coverage.html#resource>                    |
+
+##### On *first-connection*, *periodic-update*.
+    GET /Coverage?patient={% raw %}{{patientId}}{% endraw %}
+
+###### Request
+
+```HTTP
+GET /baseDstu2/Patient/51200 HTTP/1.1
+Host: api.fleetap.io
+Accept: application/json+fhir
+```
+
+###### Response
+
+```JSON
+```
+
 
 ##### On *periodic-update*
     GET /Observation?category=laboratory?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %}
