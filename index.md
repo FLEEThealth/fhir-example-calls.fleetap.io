@@ -269,7 +269,7 @@ Includes: Payor, account number, group number
 ###### Request
 
 ```HTTP
-GET /baseDstu2/Coverage?subscriber=51200 HTTP/1.1
+GET baseDstu2/Coverage?identifier=http://systems.fleetap.io/test_hospital/uuid|5ac03c1c-21f9-592a-86fc-3f46904dae71 HTTP/1.1
 Host: api.fleetap.io
 Accept: application/json+fhir
 ```
@@ -279,9 +279,6 @@ Accept: application/json+fhir
 ```JSON
 ```
 
-
-##### On *periodic-update*
-    GET /Observation?category=laboratory?patient={% raw %}{{patientId}}{% endraw %}&_lastUpdated=>{% raw %}{{lastCheck}}{% endraw %}
 
 ## Vital signs ([MU CCDS #13](https://www.healthit.gov/sites/default/files/2015Ed_CCG_CCDS.pdf))
 
@@ -381,6 +378,26 @@ That is: whatever is available for portal download — not a CCDS requirement
 
 ```HTTP
 GET /baseDstu2/DocumentReference?patient=51200 HTTP/1.1
+Host: api.fleetap.io
+Accept: application/json+fhir
+```
+
+###### Response
+
+```JSON
+```
+
+## Patient appointments
+
+A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).
+
+##### On *first-connection*
+    GET /Appointment?patient={% raw %}{{patientId}}{% endraw %}
+
+###### Request
+
+```HTTP
+GET /baseDstu2/Appointment?patient=51200 HTTP/1.1
 Host: api.fleetap.io
 Accept: application/json+fhir
 ```
