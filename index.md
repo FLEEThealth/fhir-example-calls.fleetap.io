@@ -21,9 +21,9 @@ shows the FHIR ID number for the patient on this server.
 
 This means that in all other Resources, like for a Medication or Appointment, the patient will be referenced by their number, and not by their name. Like here (shortened json here on purpose...)
 
- +    {"resourceType": "MedicationOrder"},
-         "patient": {
-         "reference": "Patient/51200"
+ +    {`"resourceType": "MedicationOrder"`},
+         `"patient": {
+         "reference": "Patient/51200"`
          },
          "prescriber": {
          "reference": "Practitioner/7903"
@@ -32,7 +32,7 @@ This means that in all other Resources, like for a Medication or Appointment, th
          "coding": [{
          "system": "http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm",
          "code": "00062141116",
-         "display": "Ortho Micronor 0.35 mg Tab"
+         "display": `"Ortho Micronor 0.35 mg Tab"`
          }
          ]},"dosageInstruction": [{"text": "Take one tablet by mouth daily"}]
          }
